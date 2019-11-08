@@ -35,20 +35,21 @@ namespace DotNetCore.CAP.Abstractions
 
         public AsyncLocal<ICapTransaction> Transaction { get; }
 
-        public void Publish<T>(string name, T contentObj, string callbackName = null)
+        public void Publish<T>(string name, T contentObj, TracingHeaders headers = null, string callbackName = null)
         {
             var message = new CapPublishedMessage
             {
                 Id = SnowflakeId.Default().NextId(),
                 Name = name,
                 Content = Serialize(contentObj, callbackName),
-                StatusName = StatusName.Scheduled
+                StatusName = StatusName.Scheduled,
+                Headers = headers
             };
 
             PublishAsyncInternal(message).GetAwaiter().GetResult();
         }
 
-        public async Task PublishAsync<T>(string name, T contentObj, string callbackName = null,
+        public async Task PublishAsync<T>(string name, T contentObj, TracingHeaders headers = null, string callbackName = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var message = new CapPublishedMessage
@@ -56,7 +57,8 @@ namespace DotNetCore.CAP.Abstractions
                 Id = SnowflakeId.Default().NextId(),
                 Name = name,
                 Content = Serialize(contentObj, callbackName),
-                StatusName = StatusName.Scheduled
+                StatusName = StatusName.Scheduled,
+                Headers = headers
             };
 
             await PublishAsyncInternal(message);

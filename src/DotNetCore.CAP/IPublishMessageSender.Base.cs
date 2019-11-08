@@ -41,7 +41,7 @@ namespace DotNetCore.CAP
             _logger = logger;
         }
 
-        public abstract Task<OperateResult> PublishAsync(string keyName, string content);
+        public abstract Task<OperateResult> PublishAsync(string keyName, string content, TracingHeaders headers = null);
 
         public async Task<OperateResult> SendAsync(CapPublishedMessage message)
         {
@@ -66,7 +66,7 @@ namespace DotNetCore.CAP
             var startTime = DateTimeOffset.UtcNow;
             var stopwatch = Stopwatch.StartNew();
 
-            var tracingResult = TracingBefore(message.Name, message.Content);
+            var tracingResult = TracingBefore(message.Name, message.Content, message.Headers);
             var operationId = tracingResult.Item1;
 
             var sendValues = tracingResult.Item2 != null
@@ -147,7 +147,7 @@ namespace DotNetCore.CAP
             return true;
         }
 
-        private (Guid, TracingHeaders) TracingBefore(string topic, string values)
+        private (Guid, TracingHeaders) TracingBefore(string topic, string values, TracingHeaders headers)
         {
             Guid operationId = Guid.NewGuid();
 
@@ -156,7 +156,7 @@ namespace DotNetCore.CAP
                 ServersAddress, topic,
                 values,
                 DateTimeOffset.UtcNow);
-
+            eventData.Headers = headers;
             s_diagnosticListener.WritePublishBefore(eventData);
 
             return (operationId, eventData.Headers);  //if not enabled diagnostics ,the header will be null

@@ -2,8 +2,10 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using DotNetCore.CAP.Diagnostics;
 using DotNetCore.CAP.Internal;
 using DotNetCore.CAP.Processor.States;
 using Microsoft.Extensions.Logging;
@@ -34,15 +36,23 @@ namespace DotNetCore.CAP.RabbitMQ
 
         protected override string ServersAddress => _connectionChannelPool.HostAddress;
 
-        public override Task<OperateResult> PublishAsync(string keyName, string content)
+        public override Task<OperateResult> PublishAsync(string keyName, string content, TracingHeaders headers = null)
         {
             var channel = _connectionChannelPool.Rent();
             try
             {
                 var body = Encoding.UTF8.GetBytes(content);
+                var mqheaders = new Dictionary<string, object>();
+                if (headers != null)
+                    foreach (var keyValue in headers)
+                    {
+                        mqheaders.Add(keyValue.Key, keyValue.Value);
+                    }
+
                 var props = new BasicProperties()
                 {
-                    DeliveryMode = 2
+                    DeliveryMode = 2,
+                    Headers = mqheaders
                 };
 
                 channel.ExchangeDeclare(_exchange, RabbitMQOptions.ExchangeType, true);

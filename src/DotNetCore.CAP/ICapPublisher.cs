@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Core Community. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using DotNetCore.CAP.Diagnostics;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,16 +25,18 @@ namespace DotNetCore.CAP
         /// </summary>
         /// <param name="name">the topic name or exchange router key.</param>
         /// <param name="contentObj">message body content, that will be serialized of json.</param>
+        /// <param name="headers">TracingHeaders</param>
         /// <param name="callbackName">callback subscriber name</param>
         /// <param name="cancellationToken"></param>
-        Task PublishAsync<T>(string name, T contentObj, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task PublishAsync<T>(string name, T contentObj, TracingHeaders headers = null, string callbackName = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Publish an object message.
         /// </summary>
         /// <param name="name">the topic name or exchange router key.</param>
         /// <param name="contentObj">message body content, that will be serialized of json.</param>
+        /// <param name="headers">TracingHeaders</param>
         /// <param name="callbackName">callback subscriber name</param>
-        void Publish<T>(string name, T contentObj, string callbackName = null);
+        void Publish<T>(string name, T contentObj, TracingHeaders headers = null, string callbackName = null);
     }
 }

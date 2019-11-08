@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Core Community. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
+using DotNetCore.CAP.Diagnostics;
 using System;
 
 namespace DotNetCore.CAP.Models
@@ -28,6 +29,7 @@ namespace DotNetCore.CAP.Models
         public int Retries { get; set; }
 
         public string StatusName { get; set; }
+        public TracingHeaders Headers { get; set; }
 
         public override string ToString()
         {

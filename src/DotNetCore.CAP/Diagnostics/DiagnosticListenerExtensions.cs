@@ -94,7 +94,8 @@ namespace DotNetCore.CAP.Diagnostics
         {
             if (@this.IsEnabled(CapBeforePublish))
             {
-                eventData.Headers = new TracingHeaders();
+                if (eventData.Headers == null)
+                    eventData.Headers = new TracingHeaders();
                 @this.Write(CapBeforePublish, eventData);
             }
         }
@@ -112,7 +113,6 @@ namespace DotNetCore.CAP.Diagnostics
         {
             if (@this.IsEnabled(CapErrorPublish))
             {
-                eventData.Headers = new TracingHeaders();
                 @this.Write(CapErrorPublish, eventData);
             }
         }
