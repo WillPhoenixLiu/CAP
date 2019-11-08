@@ -1,0 +1,6 @@
+nuget push src\DotNetCore.CAP\bin\Release\DotNetCore.CAP.2.6.1-c2.nupkg F6DD327853AC42BBB402380D92E269B2 -Source http://nuget.internal.myazstore.com/v3/index.json
+
+nuget push src\DotNetCore.CAP.RabbitMQ\bin\Release\DotNetCore.CAP.RabbitMQ.2.6.1-c2.nupkg F6DD327853AC42BBB402380D92E269B2 -Source http://nuget.internal.myazstore.com/v3/index.json
+
+nuget push src\DotNetCore.CAP.SqlServer\bin\Release\DotNetCore.CAP.SqlServer.2.6.1-c2.nupkg F6DD327853AC42BBB402380D92E269B2 -Source http://nuget.internal.myazstore.com/v3/index.json
+
